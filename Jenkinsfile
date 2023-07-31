@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Job2') {
+        stage('test') {
             when {
                 // Only trigger this stage if the commit is made to the develop branch
                 branch 'develop'
@@ -12,7 +12,7 @@ pipeline {
                 // For example: sh 'npm test' or 'mvn test', depending on your project
             }
         }
-        stage('Job2 and Job3') {
+        stage('test and deploy') {
             when {
                 // Only trigger this stage if the commit is made to the master branch
                 branch 'master'
