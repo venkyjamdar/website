@@ -2,28 +2,33 @@ pipeline {
     agent any
 
     stages {
-        stage('Job2') {
-            when {
-                // Only trigger this stage if the commit is made to the develop branch
-                branch 'develop'
-            }
+        stage('Build') {
             steps {
-                // Add the test steps here
-                // For example: sh 'npm test' or 'mvn test', depending on your project
+                // Job1: Build
+                git branch: ' ', url: 'https://github.com/ommaxyl/wbsite'
+                sh 'docker build -t myfile /var/www/html'
             }
         }
-        stage('Job2 and Job3') {
+        stage('Test') {
             when {
-                // Only trigger this stage if the commit is made to the master branch
+                anyOf {
+                    branch 'master'
+                    branch 'develop'
+                }
+            }
+            steps {
+                // Job2: Test
+                sh 'docker run your-image-name npm test'
+            }
+        }
+        stage('Deploy to Prod') {
+            when {
                 branch 'master'
             }
             steps {
-                // Add the test steps here
-                // For example: sh 'npm test' or 'mvn test', depending on your project
-
-                // Add the production deployment steps here
-                // For example: sh 'npm run deploy' or 'mvn deploy', depending on your project
-                // Note: Be cautious with production deployments, ensure you have proper safeguards.
+                // Job3: Prod
+                sh 'docker push your-image-name'
+                // Add additional steps to deploy to production if needed
             }
         }
     }
