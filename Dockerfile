@@ -1,3 +1,2 @@
 FROM hshar/webapp
-COPY ./website /var/www/html/website
-
+COPY .  /var/www/html
